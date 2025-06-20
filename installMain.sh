@@ -38,3 +38,6 @@ source env/bin/activate
 # Install dependencies
 pip install --upgrade pip
 pip install requests
+
+echo "✅ PC setup complete!"
+echo "Edit config.json if needed. Activate with: source env/bin/activate"
