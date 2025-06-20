@@ -39,5 +39,12 @@ source env/bin/activate
 pip install --upgrade pip
 pip install requests
 
+# Install wakeonlan
+if ! command -v wakeonlan &> /dev/null; then
+  echo "Installing wakeonlan..."
+  sudo apt update
+  sudo apt install -y wakeonlan
+fi
+
 echo "✅ Raspberry Pi setup complete!"
 echo "Edit config.json if needed. Activate with: source env/bin/activate"
