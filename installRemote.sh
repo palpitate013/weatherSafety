@@ -13,7 +13,7 @@ echo "Creating install directory at $INSTALL_DIR"
 sudo mkdir -p "$INSTALL_DIR"
 
 echo "Downloading remote.py..."
-sudo curl -fsSL "$REPO_URL/remote.py" -o "$INSTALL_DIR/remote.py"
+sudo curl -fsSL "https://raw.githubusercontent.com/palpitate013/weatherSafety/main/remote.py" -o "$INSTALL_DIR/remote.py"
 
 # Ask for config values
 read -p "Enter your OpenWeatherMap API Key: " API_KEY
