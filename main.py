@@ -2,6 +2,7 @@ import json
 import requests
 import sys
 import subprocess
+import time
 
 # Load config
 with open('config.json') as f:
@@ -40,8 +41,15 @@ def shutdown():
 
 if __name__ == "__main__":
     try:
-        if check_storm():
-            shutdown()
-    except Exception as e:
-        print(f"Error: {e}", file=sys.stderr)
-        sys.exit(1)
+        print("Starting storm monitor loop (every 90 seconds)...")
+        while True:
+            try:
+                if check_storm():
+                    shutdown()
+                else:
+                    print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] No storm detected.")
+            except Exception as e:
+                print(f"[ERROR] {e}", file=sys.stderr)
+            time.sleep(90)
+    except KeyboardInterrupt:
+        print("Exiting on user interrupt.")
