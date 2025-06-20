@@ -1,83 +1,84 @@
-Weather Safety
+# 🌦️ Weather Safety
 
-Automatically shuts down your computer when a storm is detected using OpenWeatherMap, sends a mobile alert via ntfy, and reboots it via Wake-on-LAN from a remote device once the storm has passed.
+**Automatically shuts down your computer during storms to protect hardware and reboots it remotely when it's safe — with mobile alerts.**
 
-Helps protect hardware during severe weather with minimal downtime.
-Features
+---
 
-    🌩️ Detects storms using OpenWeatherMap
+## ✅ Key Features
 
-    🔕 Sends storm alerts to your phone via ntfy
+* 🌩️ **Storm Detection** via OpenWeatherMap
+* 📱 **Mobile Alerts** sent through [ntfy](https://ntfy.sh)
+* 📴 **Auto Shutdown** of main PC when a storm is detected
+* 🖥️ **Remote Wake-on-LAN** after storm passes
+* 🔁 **Background Execution** with `systemd` for resilience
 
-    📴 Shuts down your main computer automatically
+---
 
-    🔁 Remotely reboots your main PC when the storm ends
+## 📋 Requirements
 
-    💡 Uses systemd for background execution and recovery
+* 🐖 Linux (tested on Ubuntu)
+* 🐍 Python 3
+* 🖠️ `systemd`
+* 🌐 OpenWeatherMap API Key
+* 📣 A valid ntfy topic
+* ⚡ `wakeonlan` utility (for remote machine)
+* 🖥️ Wake-on-LAN enabled on your main PC
 
-Requirements
+---
 
-    Linux (tested on Ubuntu)
+## ⚙️ Installation
 
-    Python 3
+### 🖥️ Main PC Setup — *Auto Shutdown on Storm*
 
-    systemd
+Run this on the PC you want to protect:
 
-    wakeonlan utility (for remote script)
-
-    An OpenWeatherMap API Key
-
-    A valid ntfy topic name
-
-    Wake-on-LAN enabled on your main PC
-
-Installation
-⚙️ Main PC Setup (Shutdown on Storm)
-
-Run this on the PC you want to shut down during a storm:
-
+```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/palpitate013/weatherSafety/main/install_main.sh)
+```
 
-This script:
+This script will:
 
-    Downloads main.py
+* Download `main.py`
+* Prompt for:
 
-    Prompts for config (API key, location, ntfy topic, etc.)
+  * API key
+  * Location (lat/lon)
+  * ntfy topic
+* Set up a Python virtual environment
+* Install required packages
+* Create a `systemd` service to run in the background
 
-    Sets up a Python virtual environment
+---
 
-    Installs required packages
+### 💻 Remote PC Setup — *Wake When Safe*
 
-    Creates a systemd service to run main.py
+Run this on a separate device that can send Wake-on-LAN packets:
 
-💻 Remote PC Setup (Wake After Storm)
-
-Run this on a remote device that can send Wake-on-LAN packets:
-
+```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/palpitate013/weatherSafety/main/install_remote.sh)
+```
 
-This script:
+This script will:
 
-    Downloads remote.py
+* Download `remote.py`
+* Prompt for the same config info
+* Monitor weather conditions
+* Reboot the main PC when safe
+* Run continuously in the background via `systemd`
 
-    Prompts for the same config as above
+---
 
-    Waits for the main PC to shut down
-
-    Monitors weather and reboots the PC when it's safe
-
-    Runs in the background via systemd
-
-Configuration
+## ⚙️ Configuration
 
 After install, your config will be saved to:
 
+```plaintext
 /opt/weatherSafety/config.json
+```
 
-You can edit it manually if needed.
+### 📝 Sample Configuration:
 
-Sample:
-
+```json
 {
   "weather": {
     "api_key": "your_api_key_here",
@@ -93,28 +94,39 @@ Sample:
     "hostname": "your-pc.local"
   }
 }
+```
 
-🧹 Uninstallation
-Main PC
+You can edit this file manually if needed.
 
-To uninstall the Weather Safety script from your main PC, run:
+---
 
+## 🧹 Uninstallation
+
+### 🖥️ Main PC
+
+To remove Weather Safety from the main PC:
+
+```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/palpitate013/weatherSafety/main/uninstall_main.sh)
+```
 
 This will:
 
-    Stop and disable the systemd service
+* Stop and disable the `systemd` service
+* Delete the service file
+* Remove `/opt/weatherSafety`
+* Reload `systemd` daemon
 
-    Remove the service file
+---
 
-    Delete the installation directory (/opt/weatherSafety)
+### 💻 Remote PC
 
-    Reload the systemd daemon
+To uninstall from the remote Wake-on-LAN device:
 
-Remote PC
-
-To uninstall from the remote PC, run:
-
+```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/palpitate013/weatherSafety/main/uninstall_remote.sh)
+```
 
-This performs the same steps as the main uninstall script but is intended for the remote Wake-on-LAN controller.
+Same steps as above, but targeted to the remote setup.
+
+---
