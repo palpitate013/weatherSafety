@@ -29,3 +29,8 @@ cat > config.json <<EOF
   }
 }
 EOF
+
+# Set up virtual environment
+echo "Creating virtual environment..."
+python3 -m venv env
+source env/bin/activate
