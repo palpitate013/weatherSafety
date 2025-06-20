@@ -3,7 +3,7 @@ set -e
 
 # Define variables
 INSTALL_DIR="/opt/weatherSafety"
-REPO_URL="https://raw.githubusercontent.com/palpitate013/weatherSafety/refs/heads/main/"
+REPO_URL="https://raw.githubusercontent.com/palpitate013/weatherSafety/main/"
 SERVICE_NAME="weatherSafety"
 VENV_DIR="$INSTALL_DIR/env"
 
@@ -61,7 +61,7 @@ Description=Weather Safety Script
 After=network.target
 
 [Service]
-ExecStart=$VENV_DIR/bin/python $INSTALL_DIR/main.py
+ExecStart=$VENV_DIR/bin/python $INSTALL_DIR/remote.py
 WorkingDirectory=$INSTALL_DIR
 Restart=always
 RestartSec=10
