@@ -1,5 +1,7 @@
 import json
 import requests
+import sys
+import subprocess
 
 # Load config
 with open('config.json') as f:
@@ -31,3 +33,15 @@ def send_ntfy(message, title):
     }
     response = requests.post(NTFY_URL, headers=headers, data=message)
     response.raise_for_status()
+
+def shutdown():
+    send_ntfy("Shutting down due to incoming storm.", "Storm Detected")
+    subprocess.run(["sudo", "shutdown", "now"])
+
+if __name__ == "__main__":
+    try:
+        if check_storm():
+            shutdown()
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
