@@ -48,7 +48,6 @@ python3 -m venv "$VENV_DIR"
 source "$VENV_DIR/bin/activate"
 
 echo "Installing Python dependencies..."
-pip install --upgrade pip
 pip install requests wakeonlan
 
 deactivate
