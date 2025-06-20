@@ -1,7 +1,19 @@
 #!/bin/bash
 set -e
 
-echo === Weather Safety Remote Installer ===
+# Define variables
+INSTALL_DIR="/opt/weatherSafety"
+REPO_URL="https://raw.githubusercontent.com/palpitate013/weatherSafety/main"
+SERVICE_NAME="weatherSafety"
+VENV_DIR="$INSTALL_DIR/env"
+
+echo "=== Weather Safety Main Installer ==="
+
+echo "Creating install directory at $INSTALL_DIR"
+sudo mkdir -p "$INSTALL_DIR"
+
+echo "Downloading main.py..."
+sudo curl -fsSL "$REPO_URL/main.py" -o "$INSTALL_DIR/main.py"
 
 # Ask for config values
 read -p "Enter your OpenWeatherMap API Key: " API_KEY
@@ -11,13 +23,13 @@ read -p "Enter your ntfy topic name (e.g. storm-alert): " TOPIC
 read -p "Enter your computer hostname: " HOSTNAME
 read -p "Enter your computer MAC address (e.g. AA:BB:CC:DD:EE:FF): " MAC
 
-# Write config file
-cat > config.json <<EOF
+# Create config.json in $INSTALL_DIR
+sudo tee "$INSTALL_DIR/config.json" > /dev/null <<EOF
 {
   "weather": {
     "api_key": "$API_KEY",
-    "latitude": $LAT,
-    "longitude": $LON
+    "latitude": "$LAT",
+    "longitude": "$LON"
   },
   "ntfy": {
     "topic": "$TOPIC",
@@ -30,21 +42,42 @@ cat > config.json <<EOF
 }
 EOF
 
-# Set up virtual environment
-echo "Creating virtual environment..."
-python3 -m venv env
-source env/bin/activate
+# Create Virtual Environment
+echo "Creating virtual environment in $VENV_DIR"
+sudo python3 -m venv "$VENV_DIR"
+source "$VENV_DIR/bin/activate"
 
 # Install dependencies
 pip install --upgrade pip
-pip install requests
+pip install requests wakeonlan
 
-# Install wakeonlan
-if ! command -v wakeonlan &> /dev/null; then
-  echo "Installing wakeonlan..."
-  sudo apt update
-  sudo apt install -y wakeonlan
-fi
+deactivate
 
-echo "✅ Raspberry Pi setup complete!"
-echo "Edit config.json if needed. Activate with: source env/bin/activate"
+# Create systemd Service
+echo "Creating systemd service..."
+sudo tee /etc/systemd/system/${SERVICE_NAME}.service > /dev/null <<EOF
+[Unit]
+Description=Weather Safety Script
+After=network.target
+
+[Service]
+ExecStart=$VENV_DIR/bin/python $INSTALL_DIR/main.py
+WorkingDirectory=$INSTALL_DIR
+Restart=always
+RestartSec=10
+User=$(whoami)
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Enable & Start service
+echo "Reloading systemd and enabling service..."
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+sudo systemctl enable "$SERVICE_NAME"
+sudo systemctl start "$SERVICE_NAME"
+
+echo "✅ weatherSafety setup complete!"
+echo "Config file located at: $INSTALL_DIR/config.json"
+echo "Use 'sudo systemctl status $SERVICE_NAME' to check service status."
