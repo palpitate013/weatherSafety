@@ -23,3 +23,11 @@ def check_storm(mock_weather=None):
     description = weather.get("weather", [{}])[0].get("description", "").lower()
     storm_keywords = ["thunderstorm", "tornado", "storm", "hail"]
     return any(keyword in description for keyword in storm_keywords)
+
+def send_ntfy(message, title):
+    headers = {
+        "Title": title,
+        "Priority": "urgent"
+    }
+    response = requests.post(NTFY_URL, headers=headers, data=message)
+    response.raise_for_status()
