@@ -1,7 +1,13 @@
 #!/bin/bash
 set -e
 
+# Define variables
+INSTALL_DIR="/opt/weatherSafety"
+
 echo "=== Weather Safety Main Installer ==="
+
+echo "Creating install directory at $INSTALL_DIR"
+sudo mkdir -p "$INSTALL_DIR"
 
 # Ask for config values
 read -p "Enter your OpenWeatherMap API Key: " API_KEY
