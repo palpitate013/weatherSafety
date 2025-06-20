@@ -1,5 +1,6 @@
 import json
 import requests
+import subprocess
 
 # Load config
 with open('config.json') as f:
@@ -31,3 +32,6 @@ def send_ntfy(message, title):
     }
     response = requests.post(NTFY_URL, headers=headers, data=message)
     response.raise_for_status()
+
+def wake_pc(mac):
+    subprocess.run(["wakeonlan", mac])
