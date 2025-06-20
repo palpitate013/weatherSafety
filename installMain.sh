@@ -9,6 +9,9 @@ echo "=== Weather Safety Main Installer ==="
 echo "Creating install directory at $INSTALL_DIR"
 sudo mkdir -p "$INSTALL_DIR"
 
+echo "Downloading main.py..."
+sudo curl -fsSL "$REPO_URL/main.py" -o "$INSTALL_DIR/main.py"
+
 # Ask for config values
 read -p "Enter your OpenWeatherMap API Key: " API_KEY
 read -p "Enter your latitude (e.g. 35.2271): " LAT
