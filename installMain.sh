@@ -23,7 +23,7 @@ read -p "Enter your ntfy topic name (e.g. storm-alert): " TOPIC
 read -p "Enter your computer hostname: " HOSTNAME
 read -p "Enter your computer MAC address (e.g. AA:BB:CC:DD:EE:FF): " MAC
 
-# === Create config.json in $INSTALL_DIR ===
+# Create config.json in $INSTALL_DIR
 sudo tee "$INSTALL_DIR/config.json" > /dev/null <<EOF
 {
   "weather": {
@@ -42,7 +42,7 @@ sudo tee "$INSTALL_DIR/config.json" > /dev/null <<EOF
 }
 EOF
 
-# === Create Virtual Environment ===
+# Create Virtual Environment
 echo "Creating virtual environment in $VENV_DIR"
 python3 -m venv "$VENV_DIR"
 source "$VENV_DIR/bin/activate"
@@ -70,7 +70,7 @@ RestartSec=10
 WantedBy=multi-user.target
 EOF
 
-# === Enable & Start service ===
+# Enable & Start service
 echo "Reloading systemd and enabling service..."
 sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
