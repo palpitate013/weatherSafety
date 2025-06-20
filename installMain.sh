@@ -3,6 +3,7 @@ set -e
 
 # Define variables
 INSTALL_DIR="/opt/weatherSafety"
+REPO_URL="https://raw.githubusercontent.com/palpitate013/weatherSafety/main"
 
 echo "=== Weather Safety Main Installer ==="
 
