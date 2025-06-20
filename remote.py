@@ -16,6 +16,29 @@ NTFY_URL = f"{config['ntfy']['url']}/{NTFY_TOPIC}"
 PC_MAC = config['computer']['mac_address']
 PC_NAME = config['computer']['hostname']
 
+def is_main_pc_up():
+    result = subprocess.run(
+        ["ping", "-c", "1", "-W", "1", PC_NAME],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL
+    )
+    return result.returncode == 0
+
+def wait_for_shutdown(ping_fail_threshold=3, interval=30):
+    print(f"Monitoring {PC_NAME} for shutdown...")
+    fail_count = 0
+    while True:
+        if is_main_pc_up():
+            fail_count = 0
+            print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] {PC_NAME} is still online.")
+        else:
+            fail_count += 1
+            print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Ping failed ({fail_count}/{ping_fail_threshold})")
+            if fail_count >= ping_fail_threshold:
+                print(f"{PC_NAME} appears to be offline. Starting storm monitor...")
+                break
+        time.sleep(interval)
+
 def check_storm(mock_weather=None):
     if mock_weather is None:
         url = f"https://api.openweathermap.org/data/2.5/weather?lat={LAT}&lon={LON}&appid={API_KEY}"
@@ -42,6 +65,7 @@ def wake_pc(mac):
 
 if __name__ == "__main__":
     try:
+        wait_for_shutdown()
         while True:
             if not check_storm():
                 wake_pc(PC_MAC)
