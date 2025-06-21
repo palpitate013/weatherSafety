@@ -33,7 +33,7 @@
 Run this on the PC you want to protect:
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/palpitate013/weatherSafety/main/install_main.sh)
+bash <(curl -fsSL https://github.com/palpitate013/weatherSafety/raw/refs/heads/main/installMain.sh)
 ```
 
 This script will:

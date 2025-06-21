@@ -195,3 +195,9 @@ cython_debug/
 
 # Configuration file
 config.json
+
+# Test Files
+test_*.py
+test.py
+# Test data files
+test_data/
