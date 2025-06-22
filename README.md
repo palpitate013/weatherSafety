@@ -33,7 +33,7 @@
 Run this on the PC you want to protect:
 
 ```bash
-bash <(curl -fsSL https://github.com/palpitate013/weatherSafety/raw/refs/heads/main/installMain.sh)
+bash <(curl -fsSL https://github.com/palpitate013/weatherSafety/raw/refs/heads/main/main/installMain.sh)
 ```
 
 This script will:
@@ -55,7 +55,7 @@ This script will:
 Run this on a separate device that can send Wake-on-LAN packets:
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/palpitate013/weatherSafety/main/install_remote.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/palpitate013/weatherSafety/main/remote/installRemote.sh)
 ```
 
 This script will:
@@ -107,7 +107,7 @@ You can edit this file manually if needed.
 To remove Weather Safety from the main PC:
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/palpitate013/weatherSafety/main/uninstall_main.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/palpitate013/weatherSafety/main/main/uninstallMain.sh)
 ```
 
 This will:
@@ -124,7 +124,7 @@ This will:
 To uninstall from the remote Wake-on-LAN device:
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/palpitate013/weatherSafety/main/uninstall_remote.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/palpitate013/weatherSafety/main/remote/uninstallRemote.sh)
 ```
 
 Same steps as above, but targeted to the remote setup.
