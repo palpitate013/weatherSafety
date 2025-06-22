@@ -3,7 +3,7 @@ set -e
 
 # Define variables
 INSTALL_DIR="/opt/weatherSafety"
-REPO_URL="https://raw.githubusercontent.com/palpitate013/weatherSafety/main"
+REPO_URL="https://raw.githubusercontent.com/palpitate013/weatherSafety/main/remote"
 SERVICE_NAME="weatherSafety-remote"
 VENV_DIR="$INSTALL_DIR/env"
 
