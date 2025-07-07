@@ -44,14 +44,13 @@ EOF
 
 # Create Virtual Environment
 echo "Creating virtual environment in $VENV_DIR"
-python3 -m venv "$VENV_DIR"
-source "$VENV_DIR/bin/activate"
+sudo mkdir -p /opt/weatherSafety
+sudo chown "$USER":"$USER" /opt/weatherSafety
 
-# Install dependencies
-pip install --upgrade pip
-pip install requests
+python3 -m venv /opt/weatherSafety/env
 
-deactivate
+/opt/weatherSafety/env/bin/pip install --upgrade pip
+/opt/weatherSafety/env/bin/pip install requests
 
 # Create systemd Service
 echo "Creating systemd service..."
