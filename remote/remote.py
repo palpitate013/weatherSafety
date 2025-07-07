@@ -66,13 +66,20 @@ def wake_pc(mac):
 if __name__ == "__main__":
     try:
         wait_for_shutdown()
+
+        print("Storm monitor started. Waiting for clear weather before rebooting main PC...")
         while True:
-            if not check_storm():
-                wake_pc(PC_MAC)
-                send_ntfy(f"{PC_NAME} booting up as storm has passed.", "Storm Over")
-                break
-            print("Storm still active, checking again in 10 minutes...")
-            time.sleep(600)
+            try:
+                if not check_storm():
+                    wake_pc(PC_MAC)
+                    send_ntfy(f"{PC_NAME} booting up as storm has passed.", "Storm Over")
+                    break
+                else:
+                    print(f"[{time.strftime('%Y-%m-%d %H:%M:%S')}] Storm still active, checking again in 10 minutes...")
+            except Exception as e:
+                print(f"[ERROR] Weather check failed: {e}", file=sys.stderr)
+
+            time.sleep(600)  # 10 minutes
     except Exception as e:
-        print(f"Error: {e}", file=sys.stderr)
+        print(f"[FATAL ERROR] {e}", file=sys.stderr)
         sys.exit(1)
